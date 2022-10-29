@@ -8,7 +8,7 @@ export const HistoryScreen = (props) => {
   useEffect(() => {
     // FUNCTION TO GET TRANSACTION HISTORY
     async function getHistory() {
-      await axios.get("<base>/history").then((res) => {
+      await axios.get("http://localhost:8000/api/transactions").then((res) => {
         sethistory(res.data);
       });
     }
@@ -28,19 +28,11 @@ export const HistoryScreen = (props) => {
         <ul className="text-center text-white mt-2 lg:mt-16">
           {history.map((transaction) => (
             <li className="mb-1 lg:mb-8">
-              3 stocks from A transferred to B at price 500$
+              {transaction.noOfStocks} stocks from {transaction.soldBy.name}{" "}
+              transferred to {transaction.boughtBy.name} at the price{" "}
+              {transaction.price}$
             </li>
           ))}
-          <li className="mb-1 lg:mb-8">
-            3 stocks from A transferred to B at price 500$
-          </li>
-
-          <li className="mb-1 lg:mb-8">
-            3 stocks from A transferred to B at price 500$
-          </li>
-          <li className="mb-1 lg:mb-8">
-            3 stocks from A transferred to B at price 500$
-          </li>
         </ul>
       </div>
     </div>

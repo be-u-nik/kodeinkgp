@@ -3,6 +3,17 @@ import Navbar from "../components/Navbar";
 // import { connect } from 'react-redux'
 
 export const OrderBookScreen = (props) => {
+  useEffect(() => {
+    // FUNCTION TO GET TRANSACTION HISTORY
+    async function getHistory() {
+      await axios.get("http://localhost:8000/api/transactions").then((res) => {
+        // sethistory(res.data);
+        console.log(res.data);
+      });
+    }
+    getHistory();
+    return () => {};
+  }, []);
   return (
     <div className="lg:flex">
       {/* NAVBAR */}

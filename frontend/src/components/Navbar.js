@@ -33,7 +33,7 @@ function Navbar() {
     <nav className="flex flex-col lg:w-1/6 lg:h-screen lg:border-r-[2px] border-[#000000] bg-[#000]/[0.86] ">
       {/* <MobileNav open={open} setOpen={setOpen} /> */}
       {/* HEADING AND NOTIFICATION ICON */}
-      <div className="w-screen lg:w-auto flex items-center justify-between mx-4 py-2 px-4 lg:pt-12 lg:mb-8">
+      <div className="lg:w-full lg:w-auto flex items-center justify-between mx-4 py-2 px-4 lg:pt-12 lg:mb-8">
         {/* <div className="font-bold text-xl"></div> */}
         <Link
           to="/realcrypto"
