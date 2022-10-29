@@ -24,6 +24,10 @@ const createStock = asyncHandler(async (req, res) => {
     throw new Error('No user exists');
   }
 
+  if (userCheck.stocksOwned < amountOfStocks && buySell === 'sell') {
+    throw new Error('Not enough stocks to sell');
+  }
+
   if (orderType == 'limit') {
     if (buySell === 'buy') {
       const stocks = await Stock.find({
@@ -40,6 +44,12 @@ const createStock = asyncHandler(async (req, res) => {
             noOfStocks: num,
           };
           await Transaction.create(transaction);
+          const seller = await User.findById(stocks[i].user);
+          await Notif.create({
+            message: `${
+              seller.name
+            } order on ${seller.date.toString()} completed 😁`,
+          });
           await Stock.findByIdAndDelete(stocks[i]._id);
           num = 0;
           break;
@@ -52,6 +62,9 @@ const createStock = asyncHandler(async (req, res) => {
             },
             currStocks = stocks[i].noOfStocks - num;
           await Transaction.create(transaction);
+          await Notif.create({
+            message: `${userCheck.name}'s transaction has been successful`,
+          });
           await Stock.findByIdAndUpdate(stocks[i]._id, {
             noOfStocks: currStocks,
           });
@@ -66,16 +79,32 @@ const createStock = asyncHandler(async (req, res) => {
             noOfStocks: stocks[i].noOfStocks,
           };
           await Transaction.create(transaction);
+          const seller = await User.findById(stocks[i].user);
+          await Notif.create({
+            message: `${
+              seller.name
+            } order on ${seller.date.toString()} completed 😁`,
+          });
           await Stock.findByIdAndDelete(stocks[i]._id);
         }
       }
       if (num > 0) {
+        await Notif.create({
+          message: `${userCheck.name}'s transaction has been queued`,
+        });
         await Stock.create({
           user: userId,
           buySell,
           noOfStocks: num,
           orderType,
           amount: price,
+        });
+        res
+          .status(200)
+          .json({ message: `${userCheck.name}'s transaction has been queued` });
+      } else {
+        res.status(200).json({
+          message: `${userCheck.name}'s transaction has been successful`,
         });
       }
     } else {
@@ -93,6 +122,12 @@ const createStock = asyncHandler(async (req, res) => {
             noOfStocks: num,
           };
           await Transaction.create(transaction);
+          const buyer = await User.findById(stocks[i].user);
+          await Notif.create({
+            message: `${
+              buyer.name
+            } order on ${buyer.date.toString()} completed 😁`,
+          });
           await Stock.findByIdAndDelete(stocks[i]._id);
           num = 0;
           break;
@@ -105,6 +140,9 @@ const createStock = asyncHandler(async (req, res) => {
             },
             currStocks = stocks[i].noOfStocks - num;
           await Transaction.create(transaction);
+          await Notif.create({
+            message: `${userCheck.name}'s transaction has been successful`,
+          });
           await Stock.findByIdAndUpdate(stocks[i]._id, {
             noOfStocks: currStocks,
           });
@@ -119,10 +157,19 @@ const createStock = asyncHandler(async (req, res) => {
             noOfStocks: stocks[i].noOfStocks,
           };
           await Transaction.create(transaction);
+          const buyer = await User.findById(stocks[i].user);
+          await Notif.create({
+            message: `${
+              buyer.name
+            } order on ${buyer.date.toString()} completed 😁`,
+          });
           await Stock.findByIdAndDelete(stocks[i]._id);
         }
       }
       if (num > 0) {
+        await Notif.create({
+          message: `${userCheck.name}'s transaction has been queued`,
+        });
         await Stock.create({
           user: userId,
           buySell,
@@ -130,12 +177,22 @@ const createStock = asyncHandler(async (req, res) => {
           orderType,
           amount: price,
         });
+        res
+          .status(200)
+          .json({ message: `${userCheck.name}'s transaction has been queued` });
+      } else {
+        res.status(200).json({
+          message: `${userCheck.name}'s transaction has been successful`,
+        });
       }
     }
   } else {
     const transactions = await Transaction.find();
     let marketCap = transactions[transactions.length - 1]?.price;
     if (buySell === 'buy') {
+      await Notif.create({
+        message: `${userCheck.name}'s transaction has been queued`,
+      });
       const stocks = await Stock.find({
         buySell: 'sell',
       });
@@ -150,6 +207,12 @@ const createStock = asyncHandler(async (req, res) => {
             noOfStocks: num,
           };
           await Transaction.create(transaction);
+          const seller = await User.findById(stocks[i].user);
+          await Notif.create({
+            message: `${
+              seller.name
+            } order on ${seller.date.toString()} completed 😁`,
+          });
           await Stock.findByIdAndDelete(stocks[i]._id);
           marketCap = transaction.price;
           num = 0;
@@ -164,6 +227,9 @@ const createStock = asyncHandler(async (req, res) => {
             },
             currStocks = stocks[i].noOfStocks - num;
           await Transaction.create(transaction);
+          await Notif.create({
+            message: `${userCheck.name}'s transaction has been successful`,
+          });
           await Stock.findByIdAndUpdate(stocks[i]._id, {
             noOfStocks: currStocks,
           });
@@ -180,15 +246,31 @@ const createStock = asyncHandler(async (req, res) => {
             noOfStocks: stocks[i].noOfStocks,
           };
           await Transaction.create(transaction);
+          const seller = await User.findById(stocks[i].user);
+          await Notif.create({
+            message: `${
+              seller.name
+            } order on ${seller.date.toString()} completed 😁`,
+          });
           await Stock.findByIdAndDelete(stocks[i]._id);
         }
       }
       if (num > 0) {
+        await Notif.create({
+          message: `${userCheck.name}'s transaction has been queued`,
+        });
         await Stock.create({
           user: userId,
           buySell,
           noOfStocks: num,
           orderType,
+        });
+        res
+          .status(200)
+          .json({ message: `${userCheck.name}'s transaction has been queued` });
+      } else {
+        res.status(200).json({
+          message: `${userCheck.name}'s transaction has been successful`,
         });
       }
     } else {
@@ -206,6 +288,12 @@ const createStock = asyncHandler(async (req, res) => {
             noOfStocks: num,
           };
           await Transaction.create(transaction);
+          const buyer = await User.findById(stocks[i].user);
+          await Notif.create({
+            message: `${
+              buyer.name
+            } order on ${buyer.date.toString()} completed 😁`,
+          });
           await Stock.findByIdAndDelete(stocks[i]._id);
           marketCap = transaction.price;
           num = 0;
@@ -220,6 +308,9 @@ const createStock = asyncHandler(async (req, res) => {
             },
             currStocks = stocks[i].noOfStocks - num;
           await Transaction.create(transaction);
+          await Notif.create({
+            message: `${userCheck.name}'s transaction has been successful`,
+          });
           await Stock.findByIdAndUpdate(stocks[i]._id, {
             noOfStocks: currStocks,
           });
@@ -236,21 +327,35 @@ const createStock = asyncHandler(async (req, res) => {
             noOfStocks: stocks[i].noOfStocks,
           };
           await Transaction.create(transaction);
+          const buyer = await User.findById(stocks[i].user);
+          await Notif.create({
+            message: `${
+              buyer.name
+            } order on ${buyer.date.toString()} completed 😁`,
+          });
           await Stock.findByIdAndDelete(stocks[i]._id);
         }
       }
       if (num > 0) {
+        await Notif.create({
+          message: `${userCheck.name}'s transaction has been queued`,
+        });
         await Stock.create({
           user: userId,
           buySell,
           noOfStocks: num,
           orderType,
         });
+        res
+          .status(200)
+          .json({ message: `${userCheck.name}'s transaction has been queued` });
+      } else {
+        res.status(200).json({
+          message: `${userCheck.name}'s transaction has been successful`,
+        });
       }
     }
   }
-
-  res.status(200).json(null);
 });
 
 module.exports = { createStock };
