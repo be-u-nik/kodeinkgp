@@ -13,7 +13,8 @@ const currentStocksSchema = mongoose.Schema({
         ref: 'User',
       },
       noOfStocks: Number,
-      type: String,
+      orderType: String,
+      amount: Number,
       date: {
         type: Date,
         default: new Date(),
@@ -31,7 +32,8 @@ const currentStocksSchema = mongoose.Schema({
         ref: 'User',
       },
       noOfStocks: Number,
-      type: String,
+      orderType: String,
+      amount: Number,
       date: {
         type: Date,
         default: new Date(),
