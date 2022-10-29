@@ -12,7 +12,8 @@ const doneStocksSchema = mongoose.Schema({
   },
   buySell: String,
   noOfStocks: Number,
-  type: String,
+  orderType: String,
+  amount: Number,
   date: {
     type: Date,
     default: new Date(),
