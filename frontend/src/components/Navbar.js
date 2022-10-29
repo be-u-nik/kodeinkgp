@@ -8,7 +8,7 @@ function NavLink({ to, children }) {
   return (
     <Link
       to={to}
-      className={`text-center mx-4 lg:mx-auto lg:w-full lg:max-w-[200px] rounded-[8px] text-xs text-[#524C4C] lg:text-sm py-1 px-2 md:py-2 lg:px-6 lg:py-3 font-bold my-2 lg:my-4 xl:my-6 bg-[#49B876] hover:bg-[#00a82f]`}
+      className={`text-center mx-4 lg:mx-auto lg:w-full lg:max-w-[200px] rounded-[8px] text-xs text-white lg:text-sm py-1 px-2 md:py-2 lg:px-6 lg:py-3 font-bold my-2 lg:my-4 xl:my-6 hover:bg-[#1E5128] bg-[#00a82f]`}
     >
       {children}
     </Link>
@@ -30,20 +30,25 @@ function Navbar() {
     return () => {};
   }, [open]);
   return (
-    <nav className="flex flex-col lg:w-1/6 lg:h-screen lg:border-r-[2px] border-[#000000] ">
+    <nav className="flex flex-col lg:w-1/6 lg:h-screen lg:border-r-[2px] border-[#000000] bg-[#000]/[0.86] ">
       {/* <MobileNav open={open} setOpen={setOpen} /> */}
       {/* HEADING AND NOTIFICATION ICON */}
-      <div className="w-screen lg:w-auto flex items-center justify-between mx-4 py-2 px-6 lg:pt-12 lg:mb-8">
+      <div className="w-screen lg:w-auto flex items-center justify-between mx-4 py-2 px-4 lg:pt-12 lg:mb-8">
         {/* <div className="font-bold text-xl"></div> */}
-        <NavLink to="/realcrypto">Choi-stocks</NavLink>
+        <Link
+          to="/realcrypto"
+          className={`text-center lg:mx-auto px-2 text-black bg-[white] rounded-[8px] py-1 md:py-2 lg:py-3 font-bold text-lg`}
+        >
+          Choi-stocks
+        </Link>
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            fill="none"
+            fill="#fff"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="w-6 h-6"
+            className="w-12 h-12 border-[2px] rounded p-1"
             onClick={() => setOpen((prev) => !prev)}
           >
             <path

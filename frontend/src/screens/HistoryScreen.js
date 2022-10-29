@@ -21,12 +21,26 @@ export const HistoryScreen = (props) => {
       {/* NAVBAR */}
       <Navbar />
       {/* SCREEN CONTENT */}
-      <div className="lg:w-5/6 px-8 py-8">
-        <h1 className="text-center">Trade transaction History</h1>
-        <ul className="text-center">
+      <div className="text-white lg:w-5/6 px-8 py-8 lg:px-16 bg-[#000] h-screen overflow-y-scroll">
+        <h1 className="text-white text-center font-bold text-base lg:text-3xl">
+          Trade transaction History
+        </h1>
+        <ul className="text-center text-white mt-2 lg:mt-16">
           {history.map((transaction) => (
-            <li>3 stocks from A transferred to B at price 500$</li>
+            <li className="mb-1 lg:mb-8">
+              3 stocks from A transferred to B at price 500$
+            </li>
           ))}
+          <li className="mb-1 lg:mb-8">
+            3 stocks from A transferred to B at price 500$
+          </li>
+
+          <li className="mb-1 lg:mb-8">
+            3 stocks from A transferred to B at price 500$
+          </li>
+          <li className="mb-1 lg:mb-8">
+            3 stocks from A transferred to B at price 500$
+          </li>
         </ul>
       </div>
     </div>
