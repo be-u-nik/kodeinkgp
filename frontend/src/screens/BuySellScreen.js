@@ -3,6 +3,9 @@ import Navbar from "../components/Navbar";
 // import { connect } from 'react-redux'
 
 export const BuySellScreen = (props) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
   return (
     <div className="flex">
       <Navbar />
@@ -53,6 +56,7 @@ export const BuySellScreen = (props) => {
           <button
             type="submit"
             className="mt-2 lg:mt-8 px-6 py-2 rounded border-[1px]"
+            onClick={handleSubmit}
           >
             Place Order
           </button>
