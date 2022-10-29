@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
-import { v4 as uuidv4 } from 'uuid';
 
-const doneStocksSchema = mongoose.Schema({
-  id: {
-    type: 'string',
-    default: uuidv4().toString(),
-  },
+const stockSchema = mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -13,11 +8,14 @@ const doneStocksSchema = mongoose.Schema({
   buySell: String,
   noOfStocks: Number,
   orderType: String,
-  amount: Number,
+  amount: {
+    type: Number,
+    default: -1,
+  },
   date: {
     type: Date,
     default: new Date(),
   },
 });
 
-module.exports = mongoose.model('DoneStocks', doneStocksSchema);
+module.exports = mongoose.model('Stock', stockSchema);
