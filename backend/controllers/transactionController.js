@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 
 const User = require('../models/userModel');
 const Transaction = require('../models/transactionModel');
+const Stock = require('../models/stockModel');
 
 const transactionHistory = asyncHandler(async (req, res) => {
   const transactionsWithId = await Transaction.find();
@@ -21,3 +22,12 @@ const transactionHistory = asyncHandler(async (req, res) => {
 
   res.status(200).json(transactions);
 });
+
+const orderBook = asyncHandler(async (req, res) => {
+  const Stocks = await Stock.find();
+  if (!currentStocks) {
+    res.status(200).json(Stocks);
+  }
+});
+
+module.exports = { transactionHistory, orderBook };
