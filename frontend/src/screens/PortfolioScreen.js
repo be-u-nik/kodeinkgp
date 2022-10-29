@@ -1,10 +1,14 @@
 import React from "react";
 import Navbar from "../components/Navbar";
+import { ToastContainer, toast } from "react-toastify";
+
 // import { connect } from 'react-redux'
 
 export const PortfolioScreen = (props) => {
   return (
     <div className="lg:flex">
+      <ToastContainer position="top-center" autoClose={5000} />
+
       {/* NAVBAR */}
       <Navbar />
       {/* SCREEN CONTENT */}

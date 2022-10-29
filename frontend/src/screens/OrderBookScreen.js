@@ -1,21 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+
 // import { connect } from 'react-redux'
 
 export const OrderBookScreen = (props) => {
+  const [buy, setbuy] = useState([]);
+  const [sell, setsell] = useState([]);
   useEffect(() => {
     // FUNCTION TO GET TRANSACTION HISTORY
-    async function getHistory() {
-      await axios.get("http://localhost:8000/api/transactions").then((res) => {
+    async function getOrderBook() {
+      await axios.get("http://localhost:8000/api/orderBook").then((res) => {
         // sethistory(res.data);
         console.log(res.data);
+        setbuy(res.data.buy);
+        setsell(res.data.sell);
       });
     }
-    getHistory();
+    getOrderBook();
     return () => {};
   }, []);
   return (
     <div className="lg:flex">
+      <ToastContainer position="top-center" autoClose={5000} />
+
       {/* NAVBAR */}
       <Navbar />
       {/* SCREEN CONTENT */}
@@ -35,21 +44,16 @@ export const OrderBookScreen = (props) => {
                 </tr>
               </thead>
               <tbody className="">
-                <tr className="text-white text-center border-spacing-x-3 border-slate-300 py-6 lg:py-8 pb-[40px] h-[54px] lg:h-[62px]">
-                  <td>kaizen</td>
-                  <td>Stonks🚀</td>
-                  <td>No money</td>
-                </tr>
-                <tr className="text-white text-center border-spacing-x-3 border-slate-300 py-6 lg:py-8 pb-[40px] h-[54px] lg:h-[62px]">
-                  <td>kaizen</td>
-                  <td>Stonks🚀</td>
-                  <td>No money</td>
-                </tr>
-                <tr className="text-white text-center border-spacing-x-3 border-slate-300 py-6 lg:py-8 pb-[40px] h-[54px] lg:h-[62px]">
-                  <td>kaizen</td>
-                  <td>Stonks🚀</td>
-                  <td>No money</td>
-                </tr>
+                {buy.map((val, index) => (
+                  <tr
+                    key={`buy_${index}`}
+                    className="text-white text-center border-spacing-x-3 border-slate-300 py-6 lg:py-8 pb-[40px] h-[54px] lg:h-[62px]"
+                  >
+                    <td>{val.noOfStocks}</td>
+                    <td>{val.amount}</td>
+                    <td>{val.orderType}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -68,16 +72,16 @@ export const OrderBookScreen = (props) => {
                 </tr>
               </thead>
               <tbody className="">
-                <tr className="text-white text-center border-spacing-x-3 border-slate-300 py-6 lg:py-8 pb-[40px] h-[54px] lg:h-[62px]">
-                  <td>kaizen</td>
-                  <td>Stonks🚀</td>
-                  <td>No money</td>
-                </tr>
-                <tr className="text-white text-center border-spacing-x-3 border-slate-300 py-6 lg:py-8 pb-[40px] h-[54px] lg:h-[62px]">
-                  <td>kaizen</td>
-                  <td>Stonks🚀</td>
-                  <td>No money</td>
-                </tr>
+                {sell.map((val, index) => (
+                  <tr
+                    key={`sell_${index}`}
+                    className="text-white text-center border-spacing-x-3 border-slate-300 py-6 lg:py-8 pb-[40px] h-[54px] lg:h-[62px]"
+                  >
+                    <td>{val.noOfStocks}</td>
+                    <td>{val.amount}</td>
+                    <td>{val.orderType}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

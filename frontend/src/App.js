@@ -1,4 +1,5 @@
 import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 import React, { useEffect } from "react";
 // import store from "./store";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";

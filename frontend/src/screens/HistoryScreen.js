@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+
 // import { connect } from 'react-redux'
 
 export const HistoryScreen = (props) => {
@@ -18,6 +20,7 @@ export const HistoryScreen = (props) => {
 
   return (
     <div className="lg:flex">
+      <ToastContainer position="top-center" autoClose={5000} />
       {/* NAVBAR */}
       <Navbar />
       {/* SCREEN CONTENT */}

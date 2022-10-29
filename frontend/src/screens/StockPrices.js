@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import ReactApexChart from "react-apexcharts";
+
 // import { connect } from 'react-redux'
 
 export const StockPrices = (props) => {

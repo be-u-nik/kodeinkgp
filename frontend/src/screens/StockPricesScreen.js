@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import ReactApexChart from "react-apexcharts";
+import { ToastContainer, toast } from "react-toastify";
+
 // import { connect } from 'react-redux'
 
 export const StockPricesScreen = (props) => {
@@ -147,6 +149,8 @@ export const StockPricesScreen = (props) => {
   };
   return (
     <div className="lg:flex">
+      <ToastContainer position="top-center" autoClose={5000} />
+
       {/* NAVBAR */}
       <Navbar />
       {/* SCREEN CONTENT */}
