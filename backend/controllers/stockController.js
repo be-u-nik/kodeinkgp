@@ -1,5 +1,4 @@
 const asyncHandler = require('express-async-handler');
-import { v4 as uuidv4 } from 'uuid';
 
 const User = require('../models/userModel');
 const Stock = require('../models/stockModel');
