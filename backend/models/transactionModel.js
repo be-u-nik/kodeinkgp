@@ -13,7 +13,7 @@ const transactionSchema = mongoose.Schema({
   noOfStocks: Number,
   time: {
     type: Date,
-    default: new Date(),
+    default: Date.now(),
   },
 });
 

@@ -6,6 +6,7 @@ const Transaction = require('../models/transactionModel');
 const Notif = require('../models/notifModel');
 
 const createStock = asyncHandler(async (req, res) => {
+  console.log(req.body);
   const { userId, buySell, orderType, amountOfStocks, price } = req.body;
 
   if (
@@ -133,7 +134,7 @@ const createStock = asyncHandler(async (req, res) => {
     }
   } else {
     const transactions = await Transaction.find();
-    let marketCap = transactions[transactions.length - 1].price;
+    let marketCap = transactions[transactions.length - 1]?.price;
     if (buySell === 'buy') {
       const stocks = await Stock.find({
         buySell: 'sell',
