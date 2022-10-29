@@ -195,7 +195,7 @@ const createStock = asyncHandler(async (req, res) => {
       });
       const stocks = await Stock.find({
         buySell: 'sell',
-      });
+      }).sort({ amount: 1, date: 1 });
       let num = amountOfStocks;
       for (let i = 0; i < stocks.length && num > 0; i++) {
         if (stocks[i].noOfStocks == num) {
@@ -276,7 +276,7 @@ const createStock = asyncHandler(async (req, res) => {
     } else {
       const stocks = await Stock.find({
         buySell: 'buy',
-      });
+      }).sort({ amount: -1, date: 1 });
       let num = amountOfStocks;
       for (let i = 0; i < stocks.length && num > 0; i++) {
         if (stocks[i].noOfStocks == num) {
