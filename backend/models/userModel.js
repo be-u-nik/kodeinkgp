@@ -10,7 +10,6 @@ const userSchema = mongoose.Schema({
     type: 'number',
     default: 0,
   },
-  stocks: [String],
 });
 
 module.exports = mongoose.model('User', userSchema);
