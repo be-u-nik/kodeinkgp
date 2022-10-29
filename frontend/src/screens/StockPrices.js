@@ -3,10 +3,9 @@ import Navbar from "../components/Navbar";
 import ReactApexChart from "react-apexcharts";
 // import { connect } from 'react-redux'
 
-export const StockPricesScreen = (props) => {
+export const StockPrices = (props) => {
   const [xvalues, setxvalues] = useState([]);
   const [yvalues, setyvalues] = useState([]);
-  const [currentPrice, setcurrentPrice] = useState(0);
   const [series_state, setseries_state] = useState([
     {
       name: "status",
@@ -14,26 +13,6 @@ export const StockPricesScreen = (props) => {
     },
   ]);
   useEffect(() => {
-    let ws = new WebSocket("wss://stream.binance.com:9443/ws/etheur@trade");
-    let y = {};
-    ws.onmessage = (e) => {
-      var d = new Date(JSON.parse(e.data).T);
-      y[`${d.getHours()}/${d.getMinutes()}-${d.getSeconds()}`] = JSON.parse(
-        e.data
-      ).p;
-      if (Object.keys(y).length > 50) delete y[Object.keys(y)[0]];
-      let yval = Object.values(y);
-      // console.log(yval);
-      setcurrentPrice(yval.slice(-1));
-      setxvalues(Object.keys(y));
-      setseries_state([
-        {
-          name: "status",
-          data: yval,
-        },
-      ]);
-    };
-
     return () => {};
   }, []);
 
@@ -116,8 +95,8 @@ export const StockPricesScreen = (props) => {
       <div className="lg:w-5/6 px-8 py-8">
         {/* GRAPH HEADING */}
         <div className="flex justify-between my-2 lg:my-6 lg:mb-8">
-          <h2 onClick={() => console.log(series)}>Etheur Stock Prices</h2>
-          <p>Current Stock Price: {Math.round(currentPrice)}$</p>
+          <h2 onClick={() => console.log(series)}>Look here's a graph...</h2>
+          <p>Current Stock Price: 9001$</p>
         </div>
         {/* GRAPH */}
         <ReactApexChart
@@ -136,4 +115,4 @@ export const StockPricesScreen = (props) => {
 // const mapDispatchToProps = {}
 
 // export default connect(mapStateToProps, mapDispatchToProps)(StockPricesScreen)
-export default StockPricesScreen;
+export default StockPrices;
