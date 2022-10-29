@@ -25,9 +25,8 @@ const transactionHistory = asyncHandler(async (req, res) => {
 
 const orderBook = asyncHandler(async (req, res) => {
   const Stocks = await Stock.find();
-  if (!currentStocks) {
-    res.status(200).json(Stocks);
-  }
+
+  res.status(200).json(Stocks);
 });
 
 module.exports = { transactionHistory, orderBook };
