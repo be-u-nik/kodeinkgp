@@ -25,7 +25,7 @@ const transactionHistory = asyncHandler(async (req, res) => {
 
 const orderBook = asyncHandler(async (req, res) => {
   const buyStocks = await Stock.find({ buySell: 'buy' });
-  const sellStocks = await Stock.find({ sellSell: 'sell' });
+  const sellStocks = await Stock.find({ buySell: 'sell' });
 
   res.status(200).json({ buy: buyStocks, sell: sellStocks });
 });

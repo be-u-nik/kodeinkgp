@@ -21,14 +21,14 @@ const transactionSchema = mongoose.Schema({
 });
 
 transactionSchema.post('save', async function () {
-  let seller = await User.findById(soldBy),
-    buyer = await User.findById(boughtBy);
-  seller.fiat += price * noOfStocks;
-  seller.stocksOwned -= noOfStocks;
-  buyer.fiat -= price * noOfStocks;
-  buyer.stocksOwned += noOfStocks;
+  let seller = await User.findById(this.soldBy),
+    buyer = await User.findById(this.boughtBy);
+  seller.fiat += this.price * this.noOfStocks;
+  seller.stocksOwned -= this.noOfStocks;
+  buyer.fiat -= this.price * this.noOfStocks;
+  buyer.stocksOwned += this.noOfStocks;
   Notif.create({
-    message: `${noOfStocks} stocks from ${seller.name} transferred to ${buyer.name} at price ${price}$`,
+    message: `${this.noOfStocks} stocks from ${seller.name} transferred to ${buyer.name} at price ${this.price}$`,
   });
   await seller.save();
   await buyer.save();
