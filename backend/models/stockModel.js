@@ -18,4 +18,7 @@ const stockSchema = mongoose.Schema({
   },
 });
 
+stockSchema.index({ amount: 1, date: 1 });
+stockSchema.index({ amount: -1, date: 1 });
+
 module.exports = mongoose.model('Stock', stockSchema);
