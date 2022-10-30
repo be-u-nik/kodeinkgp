@@ -28,6 +28,10 @@ const createStock = asyncHandler(async (req, res) => {
     throw new Error("Not enough stocks to sell");
   }
 
+  if (userCheck.fiat <= 0 && buySell === "buy") {
+    throw new Error("Not enough money to buy new stocks");
+  }
+
   if (orderType == "limit") {
     if (buySell === "buy") {
       const stocks = await Stock.find({
