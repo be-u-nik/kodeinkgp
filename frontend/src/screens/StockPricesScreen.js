@@ -44,9 +44,15 @@ export const StockPricesScreen = (props) => {
       Number(yval.slice(-1)[0]) > closePrice
         ? setincreasedc(true)
         : setincreasedc(false);
-      setincreasedo((prev) => openPrice > JSON.parse(e.data).data.o);
-      setincreasedh((prev) => highPrice > JSON.parse(e.data).data.h);
-      setincreasedl((prev) => lowPrice > JSON.parse(e.data).data.l);
+      openPrice > JSON.parse(e.data).data.o
+        ? setincreasedo(true)
+        : setincreasedo(false);
+      highPrice > JSON.parse(e.data).data.h
+        ? setincreasedh(true)
+        : setincreasedh(false);
+      lowPrice > JSON.parse(e.data).data.l
+        ? setincreasedl(true)
+        : setincreasedl(false);
       setclosePrice(Number(yval.slice(-1)[0]));
       setopenPrice(JSON.parse(e.data).data.o);
       sethighPrice(JSON.parse(e.data).data.h);
@@ -65,7 +71,7 @@ export const StockPricesScreen = (props) => {
     return () => {
       // ws.close();
     };
-  }, [closePrice]);
+  }, []);
 
   // DEFINING PLOTTING POINTS ON THE GRAPH
   const series = series_state;
