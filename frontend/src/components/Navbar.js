@@ -56,7 +56,7 @@ function Navbar() {
           Kaizen-stocks
         </Link>
       </div>
-      <div className="lg:w-auto flex items-center justify-between mx-4 py-2 px-4 lg:mb-8">
+      <div className="lg:w-auto flex items-center justify-between mx-4 py-2 px-4 lg:mb-4 xl:mb-8">
         {/* <div className="font-bold text-xl"></div> */}
         <Link to="/realcrypto">
           <svg
@@ -95,7 +95,7 @@ function Navbar() {
         </div>
       </div>
       {/* HORIZONTAL RULE */}
-      <div className="mx-auto w-1/2 border-b-[2px] border-[#000] hidden lg:block lg:mb-8"></div>
+      <div className="mx-auto w-1/2 border-b-[2px] border-[#000] hidden lg:block lg:mb-4 xl:mb-8"></div>
       {/* NAVIGATION TABS */}
       <div className="flex mx-6 flex-wrap lg:flex-col items-center">
         <NavLink to="/">Stock Prices</NavLink>

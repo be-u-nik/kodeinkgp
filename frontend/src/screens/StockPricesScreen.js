@@ -6,8 +6,14 @@ import ReactApexChart from "react-apexcharts";
 
 export const StockPricesScreen = (props) => {
   const [xvalues, setxvalues] = useState([]);
-  const [increased, setincreased] = useState(true);
-  const [currentPrice, setcurrentPrice] = useState(0);
+  const [increasedo, setincreasedo] = useState(true);
+  const [increasedh, setincreasedh] = useState(true);
+  const [increasedl, setincreasedl] = useState(true);
+  const [increasedc, setincreasedc] = useState(true);
+  const [closePrice, setclosePrice] = useState(0);
+  const [openPrice, setopenPrice] = useState(0);
+  const [highPrice, sethighPrice] = useState(0);
+  const [lowPrice, setlowPrice] = useState(0);
   const [series_state, setseries_state] = useState([
     {
       name: "status",
@@ -19,24 +25,32 @@ export const StockPricesScreen = (props) => {
     let ws = new WebSocket(
       "wss://stream.binance.com:9443/stream?streams=btcusdt@miniTicker"
     );
-    let y = {};
+    let y = {},
+      yval = [];
     ws.onmessage = (e) => {
       // var d = new Date(JSON.parse(e.data).T);
       var d = new Date(JSON.parse(e.data).data.E);
+
       y[`${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`] = JSON.parse(
         e.data
       ).data.c;
       // y[`${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`] = JSON.parse(
       //   e.data
       // ).p;
-      // if (Object.keys(y).length > 500) delete y[Object.keys(y)[0]];
-      let yval = Object.values(y);
+      if (Object.keys(y).length > 500) delete y[Object.keys(y)[0]];
+      yval = Object.values(y);
       // console.log(yval);
       // console.log(Number(yval.slice(-1)[0]));
-      Number(yval.slice(-1)[0]) > currentPrice
-        ? setincreased(true)
-        : setincreased(false);
-      setcurrentPrice(Number(yval.slice(-1)[0]));
+      Number(yval.slice(-1)[0]) > closePrice
+        ? setincreasedc(true)
+        : setincreasedc(false);
+      setincreasedo((prev) => openPrice > JSON.parse(e.data).data.o);
+      setincreasedh((prev) => highPrice > JSON.parse(e.data).data.h);
+      setincreasedl((prev) => lowPrice > JSON.parse(e.data).data.l);
+      setclosePrice(Number(yval.slice(-1)[0]));
+      setopenPrice(JSON.parse(e.data).data.o);
+      sethighPrice(JSON.parse(e.data).data.h);
+      setlowPrice(JSON.parse(e.data).data.l);
       setxvalues(Object.keys(y));
       setseries_state([
         {
@@ -44,11 +58,14 @@ export const StockPricesScreen = (props) => {
           data: yval.length > 500 ? yval.slice(-500) : yval,
         },
       ]);
+
+      // console.log(series_state[0]?.data);
       // console.log(JSON.parse(e.data).data.c);
     };
-
-    return () => {};
-  }, [currentPrice]);
+    return () => {
+      // ws.close();
+    };
+  }, [closePrice]);
 
   // DEFINING PLOTTING POINTS ON THE GRAPH
   const series = series_state;
@@ -152,7 +169,7 @@ export const StockPricesScreen = (props) => {
         },
       },
       title: {
-        text: "Market Price",
+        text: "Closing Price",
         style: {
           color: "#fff",
           fontSize: "12px",
@@ -185,22 +202,66 @@ export const StockPricesScreen = (props) => {
       <div className="lg:w-5/6 px-8 py-8 bg-[#000] h-screen overflow-y-scroll hidescrollbar">
         {/* GRAPH HEADING */}
         <div className="flex flex-col lg:flex-row justify-between items-center my-2 lg:my-6 lg:mb-8">
-          <h2 className="text-sm lg:text-4xl text-white">
+          <h2 className="mb-2 md:mb-0 text-sm lg:text-4xl text-white">
             Bitcoin Stock Prices
           </h2>
-          <div className="text-center px-1 lg:px-4 lg:py-1 bg-[#524C4C]/[.65] backdrop-blur-[2.8px] rounded-[8px]">
-            <p className="text-white font-bold px-4 py-2 border-b-[2px] border-[#fff]">
-              Current Stock Price{" "}
-            </p>
-            {increased ? (
-              <p className="px-4 py-2 font-bold text-base lg:text-lg text-[#1BFF4B]">
-                {Math.round(currentPrice * 100) / 100} 📈
+          <div className="flex flex-col md:flex-row">
+            <div className="mb-2 md:mb-0 md:mr-2 text-center px-1 lg:px-4 lg:py-1 bg-[#524C4C]/[.65] backdrop-blur-[2.8px] rounded-[8px]">
+              <p className="text-white font-bold px-4 py-2 border-b-[2px] border-[#fff]">
+                Open Price{" "}
               </p>
-            ) : (
-              <p className="px-4 py-2 font-bold text-base lg:text-lg text-[#DC1212]">
-                {Math.round(currentPrice * 100) / 100} 📉
+              {increasedo ? (
+                <p className="px-4 py-2 font-bold text-base lg:text-lg text-[#1BFF4B]">
+                  {Math.round(openPrice * 100) / 100} 📈
+                </p>
+              ) : (
+                <p className="px-4 py-2 font-bold text-base lg:text-lg text-[#DC1212]">
+                  {Math.round(openPrice * 100) / 100} 📉
+                </p>
+              )}
+            </div>
+            <div className="mb-2 md:mb-0 md:mr-2 text-center px-1 lg:px-4 lg:py-1 bg-[#524C4C]/[.65] backdrop-blur-[2.8px] rounded-[8px]">
+              <p className="text-white font-bold px-4 py-2 border-b-[2px] border-[#fff]">
+                High Price{" "}
               </p>
-            )}
+              {increasedh ? (
+                <p className="px-4 py-2 font-bold text-base lg:text-lg text-[#1BFF4B]">
+                  {Math.round(highPrice * 100) / 100} 📈
+                </p>
+              ) : (
+                <p className="px-4 py-2 font-bold text-base lg:text-lg text-[#DC1212]">
+                  {Math.round(highPrice * 100) / 100} 📉
+                </p>
+              )}
+            </div>
+            <div className="mb-2 md:mb-0 md:mr-2 text-center px-1 lg:px-4 lg:py-1 bg-[#524C4C]/[.65] backdrop-blur-[2.8px] rounded-[8px]">
+              <p className="text-white font-bold px-4 py-2 border-b-[2px] border-[#fff]">
+                Low- Price{" "}
+              </p>
+              {increasedl ? (
+                <p className="px-4 py-2 font-bold text-base lg:text-lg text-[#1BFF4B]">
+                  {Math.round(lowPrice * 100) / 100} 📈
+                </p>
+              ) : (
+                <p className="px-4 py-2 font-bold text-base lg:text-lg text-[#DC1212]">
+                  {Math.round(lowPrice * 100) / 100} 📉
+                </p>
+              )}
+            </div>
+            <div className="text-center px-1 lg:px-4 lg:py-1 bg-[#524C4C]/[.65] backdrop-blur-[2.8px] rounded-[8px]">
+              <p className="text-white font-bold px-4 py-2 border-b-[2px] border-[#fff]">
+                Close Price{" "}
+              </p>
+              {increasedc ? (
+                <p className="px-4 py-2 font-bold text-base lg:text-lg text-[#1BFF4B]">
+                  {Math.round(closePrice * 100) / 100} 📈
+                </p>
+              ) : (
+                <p className="px-4 py-2 font-bold text-base lg:text-lg text-[#DC1212]">
+                  {Math.round(closePrice * 100) / 100} 📉
+                </p>
+              )}
+            </div>
           </div>
         </div>
         {/* GRAPH */}

@@ -15,7 +15,6 @@ export const StockPrices = (props) => {
       data: [],
     },
   ]);
-
   useEffect(() => {
     async function getStocks() {
       await axios.get("http://localhost:8000/api/transactions").then((res) => {
