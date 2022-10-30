@@ -24,7 +24,7 @@ export const HistoryScreen = (props) => {
       {/* NAVBAR */}
       <Navbar />
       {/* SCREEN CONTENT */}
-      <div className="text-white lg:w-5/6 px-8 py-8 lg:px-16 bg-[#000] h-screen overflow-y-scroll">
+      <div className="text-white lg:w-5/6 px-8 py-8 lg:px-16 bg-[#000] h-screen overflow-y-scroll hidescrollbar">
         <h1 className="text-white text-center font-bold text-base lg:text-3xl">
           Trade transaction History
         </h1>
