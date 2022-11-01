@@ -1,9 +1,9 @@
-const asyncHandler = require("express-async-handler");
+const asyncHandler = require('express-async-handler');
 
-const User = require("../models/userModel");
-const Stock = require("../models/stockModel");
-const Transaction = require("../models/transactionModel");
-const Notif = require("../models/notifModel");
+const User = require('../models/userModel');
+const Stock = require('../models/stockModel');
+const Transaction = require('../models/transactionModel');
+const Notif = require('../models/notifModel');
 
 const createStock = asyncHandler(async (req, res) => {
   console.log(req.body);
@@ -14,29 +14,29 @@ const createStock = asyncHandler(async (req, res) => {
     !buySell ||
     !orderType ||
     !amountOfStocks ||
-    (orderType == "limit" && (price === undefined || !price))
+    (orderType == 'limit' && (price === undefined || !price))
   ) {
-    throw new Error("Fill all fields");
+    throw new Error('Fill all fields');
   }
 
   const userCheck = await User.findById(userId);
   if (!userCheck) {
-    throw new Error("No user exists");
+    throw new Error('No user exists');
   }
 
-  if (userCheck.stocksOwned < amountOfStocks && buySell === "sell") {
-    throw new Error("Not enough stocks to sell");
+  if (userCheck.stocksOwned < amountOfStocks && buySell === 'sell') {
+    throw new Error('Not enough stocks to sell');
   }
 
-  if (userCheck.fiat <= 0 && buySell === "buy") {
-    throw new Error("Not enough money to buy new stocks");
+  if (userCheck.fiat <= 0 && buySell === 'buy') {
+    throw new Error('Not enough money to buy new stocks');
   }
 
-  if (orderType == "limit") {
-    if (buySell === "buy") {
+  if (orderType == 'limit') {
+    if (buySell === 'buy') {
       const stocks = await Stock.find({
-        buySell: "sell",
-        $or: [{ amount: -1 }, { amount: price }],
+        buySell: 'sell',
+        $or: [{ amount: -1 }, { amount: { $lte: price } }],
       });
       let num = amountOfStocks;
       for (let i = 0; i < stocks.length && num > 0; i++) {
@@ -113,8 +113,8 @@ const createStock = asyncHandler(async (req, res) => {
       }
     } else {
       const stocks = await Stock.find({
-        buySell: "buy",
-        $or: [{ amount: -1 }, { amount: price }],
+        buySell: 'buy',
+        $or: [{ amount: -1 }, { amount: { $gte: price } }],
       });
       let num = amountOfStocks;
       for (let i = 0; i < stocks.length && num > 0; i++) {
@@ -193,12 +193,12 @@ const createStock = asyncHandler(async (req, res) => {
   } else {
     const transactions = await Transaction.find();
     let marketCap = transactions[transactions.length - 1]?.price || 0;
-    if (buySell === "buy") {
+    if (buySell === 'buy') {
       await Notif.create({
         message: `${userCheck.name}'s transaction has been queued`,
       });
       const stocks = await Stock.find({
-        buySell: "sell",
+        buySell: 'sell',
       }).sort({ amount: 1, date: 1 });
       let num = amountOfStocks;
       for (let i = 0; i < stocks.length && num > 0; i++) {
@@ -207,7 +207,7 @@ const createStock = asyncHandler(async (req, res) => {
             soldBy: stocks[i].user,
             boughtBy: userId,
             price:
-              stocks[i].orderType === "market" ? marketCap : stocks[i].amount,
+              stocks[i].orderType === 'market' ? marketCap : stocks[i].amount,
             noOfStocks: num,
           };
           await Transaction.create(transaction);
@@ -226,7 +226,7 @@ const createStock = asyncHandler(async (req, res) => {
               soldBy: stocks[i].user,
               boughtBy: userId,
               price:
-                stocks[i].orderType === "market" ? marketCap : stocks[i].amount,
+                stocks[i].orderType === 'market' ? marketCap : stocks[i].amount,
               noOfStocks: num,
             },
             currStocks = stocks[i].noOfStocks - num;
@@ -246,7 +246,7 @@ const createStock = asyncHandler(async (req, res) => {
             soldBy: stocks[i].user,
             boughtBy: userId,
             price:
-              stocks[i].orderType === "market" ? marketCap : stocks[i].amount,
+              stocks[i].orderType === 'market' ? marketCap : stocks[i].amount,
             noOfStocks: stocks[i].noOfStocks,
           };
           await Transaction.create(transaction);
@@ -279,7 +279,7 @@ const createStock = asyncHandler(async (req, res) => {
       }
     } else {
       const stocks = await Stock.find({
-        buySell: "buy",
+        buySell: 'buy',
       }).sort({ amount: -1, date: 1 });
       let num = amountOfStocks;
       for (let i = 0; i < stocks.length && num > 0; i++) {
@@ -288,7 +288,7 @@ const createStock = asyncHandler(async (req, res) => {
             boughtBy: stocks[i].user,
             soldBy: userId,
             price:
-              stocks[i].orderType === "market" ? marketCap : stocks[i].amount,
+              stocks[i].orderType === 'market' ? marketCap : stocks[i].amount,
             noOfStocks: num,
           };
           await Transaction.create(transaction);
@@ -307,7 +307,7 @@ const createStock = asyncHandler(async (req, res) => {
               boughtBy: stocks[i].user,
               soldBy: userId,
               price:
-                stocks[i].orderType === "market" ? marketCap : stocks[i].amount,
+                stocks[i].orderType === 'market' ? marketCap : stocks[i].amount,
               noOfStocks: num,
             },
             currStocks = stocks[i].noOfStocks - num;
@@ -327,7 +327,7 @@ const createStock = asyncHandler(async (req, res) => {
             boughtBy: stocks[i].user,
             soldBy: userId,
             price:
-              stocks[i].orderType === "market" ? marketCap : stocks[i].amount,
+              stocks[i].orderType === 'market' ? marketCap : stocks[i].amount,
             noOfStocks: stocks[i].noOfStocks,
           };
           await Transaction.create(transaction);
